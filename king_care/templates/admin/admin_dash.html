@@ -1,0 +1,670 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>Dashboard - King Care Hospital</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="{% static 'img/favicon.png' %}" rel="icon">
+  <link href="{% static 'img/apple-touch-icon.png' %}" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.gstatic.com" rel="preconnect">
+  <link
+    href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+    rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/quill/quill.snow.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/quill/quill.bubble.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/remixicon/remixicon.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/simple-datatables/style.css' %}" rel="stylesheet">
+  <link href="{% static 'css/alertify.css' %}" rel="stylesheet">
+  <link href="{% static 'css/alertify.min.css' %}" rel="stylesheet">
+  <script src="{% static 'CDN/jquery-3.1.1.min.js' %}"></script>
+  <link href="{% static 'CDN/jquery-ui.min.css' %}" rel="stylesheet">
+  <script src="{% static 'CDN/jquery-ui.min.js' %}"></script>
+
+  <link href="{% static 'font-awesome-4.7.0/css/font-awesome.css' %}" rel="stylesheet">
+  <link href="{% static 'font-awesome-4.7.0/css/font-awesome.min.css' %}" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="{% static 'css/style.css' %}" rel="stylesheet">
+
+  <!-- =======================================================
+  * Template Name: NiceAdmin
+  * Updated: Mar 09 2023 with Bootstrap v5.2.3
+  * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+</head>
+
+<body>
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="header fixed-top d-flex align-items-center">
+
+    <div class="d-flex align-items-center justify-content-between">
+      <a href="/admin_dash/" class="logo d-flex align-items-center">
+        <img src="{% static 'img/logo.png' %}" alt="">
+        <span class="d-none d-lg-block">King Care Hospital</span>
+      </a>
+      <i class="bi bi-list toggle-sidebar-btn"></i>
+    </div><!-- End Logo -->
+
+    <nav class="header-nav ms-auto">
+      <ul class="d-flex align-items-center">
+        <li class="nav-item dropdown pe-3">
+
+          <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+            <img src="{{ get_admin_info.profile_picture.url }}" alt="Profile" class="rounded-circle">
+            <span class="d-none d-md-block dropdown-toggle ps-2">{{ get_admin_info.admin_name }}</span>
+          </a><!-- End Profile Iamge Icon -->
+
+          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+            <li class="dropdown-header">
+              <h6>{{ get_admin_info.admin_name }}</h6>
+              <span>Admin</span>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="/admin_dash/admin_pro">
+                <i class="bi bi-person"></i>
+                <span>My Profile</span>
+              </a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="/admin_dash/admin_pro">
+                <i class="bi bi-person-gear"></i>
+                <span>Edit Profile</span>
+              </a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="/admin_dash/admin_pro">
+                <i class="bi bi-lock"></i>
+                <span>Change Password</span>
+              </a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="/logout">
+                <i class="bi bi-box-arrow-right"></i>
+                <span>Sign Out</span>
+              </a>
+            </li>
+
+          </ul><!-- End Profile Dropdown Items -->
+        </li><!-- End Profile Nav -->
+
+      </ul>
+    </nav><!-- End Icons Navigation -->
+
+  </header><!-- End Header -->
+
+  <!-- ======= Sidebar ======= -->
+  <aside id="sidebar" class="sidebar">
+
+    <div class="dash-profile d-flex justify-content-center align-items-center">
+      <div class="pro-img" style="width: 80px; height: 80px; border-radius: 50%; border: 1px solid #4154f1; display: flex; justify-content: center; align-items: center; margin-right: 10px;">
+        <img src="{{get_admin_info.profile_picture.url}}" alt="" style="width: 70px; height: 70px; border-radius: 50%;">
+      </div>
+      <div class="pro-title">
+        <h5 class="fs-6 mb-0">Welcome</h5>
+        <h5 class="mb-0">{{get_admin_info.admin_name}}</h3>
+        <h6>Admin</h6>
+      </div>
+    </div>
+
+    <br>
+
+    <ul class="sidebar-nav" id="sidebar-nav">
+
+      <li class="nav-item">
+        <a class="nav-link " href="/admin_dash/">
+          <i class="bi bi-grid"></i>
+          <span>Dashboard</span>
+        </a>
+      </li><!-- End Dashboard Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="/admin_dash/department/">
+          <i class="fa fa-sitemap"></i>
+          <span>Department</span>
+        </a>
+      </li><!-- End Contact Page Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#doctor" data-bs-toggle="collapse" href="#">
+          <i class="fa fa-user-md"></i><span>Doctor</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="doctor" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="/admin_dash/pending_doctor/">
+              <i class="bi bi-circle"></i><span>Pending Doctor</span>
+            </a>
+          </li>
+          <li>
+            <a href="/admin_dash/doctor/">
+              <i class="bi bi-circle"></i><span>Approved Doctor</span>
+            </a>
+          </li>
+        </ul>
+      </li><!-- End Charts Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="/admin_dash/patient/">
+          <i class="fa fa-wheelchair"></i>
+          <span>Patient</span>
+        </a>
+      </li><!-- End Contact Page Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#nurse" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-plus-square-fill"></i><span>Nurse</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="nurse" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="/admin_dash/pending_nurse/">
+              <i class="bi bi-circle"></i><span>Pending Nurse</span>
+            </a>
+          </li>
+          <li>
+            <a href="/admin_dash/nurse/">
+              <i class="bi bi-circle"></i><span>Approved Nurse</span>
+            </a>
+          </li>
+        </ul>
+      </li><!-- End Charts Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#pharmacy" data-bs-toggle="collapse" href="#">
+          <i class="fa fa-medkit"></i><span>Pharmacist</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="pharmacy" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="/admin_dash/pending_pharmacist/">
+              <i class="bi bi-circle"></i><span>Pending Pharmacist</span>
+            </a>
+          </li>
+          <li>
+            <a href="/admin_dash/pharmacist/">
+              <i class="bi bi-circle"></i><span>Approved Pharmacist</span>
+            </a>
+          </li>
+        </ul>
+      </li><!-- End Charts Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#laboratory" data-bs-toggle="collapse" href="#">
+          <i class="fa fa-user-md"></i><span>Laboratorist</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="laboratory" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="/admin_dash/pending_laboratorist/">
+              <i class="bi bi-circle"></i><span>Pending Laboratorist</span>
+            </a>
+          </li>
+          <li>
+            <a href="/admin_dash/laboratorist/">
+              <i class="bi bi-circle"></i><span>Approved Laboratorist</span>
+            </a>
+          </li>
+        </ul>
+      </li><!-- End Charts Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#account" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-cash"></i><span>Accountant</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="account" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="/admin_dash/pending_accountant/">
+              <i class="bi bi-circle"></i><span>Pending Accountant</span>
+            </a>
+          </li>
+          <li>
+            <a href="/admin_dash/accountant/">
+              <i class="bi bi-circle"></i><span>Approved Accountant</span>
+            </a>
+          </li>
+        </ul>
+      </li><!-- End Charts Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#receptionist" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-plus-square-fill"></i><span>Receptionist</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="receptionist" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="/admin_dash/pending_receptionist/">
+              <i class="bi bi-circle"></i><span>Pending Receptionist</span>
+            </a>
+          </li>
+          <li>
+            <a href="/admin_dash/receptionist/">
+              <i class="bi bi-circle"></i><span>Approved Receptionist</span>
+            </a>
+          </li>
+        </ul>
+      </li><!-- End Charts Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#monitor_hospital" data-bs-toggle="collapse" href="#">
+          <i class="fa fa-medkit"></i><span>Monitor Hospital</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="monitor_hospital" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="/pharmacy_dash/manage_medicine/">
+              <i class="bi bi-circle"></i><span>Payment History</span>
+            </a>
+          </li>
+          <li>
+            <a href="/pharmacy_dash/medicine_sales/">
+              <i class="bi bi-circle"></i><span>Bed Allotment</span>
+            </a>
+          </li>
+          <li>
+            <a href="/pharmacy_dash/medicine_sales/">
+              <i class="bi bi-circle"></i><span>Blood Bank</span>
+            </a>
+          </li>
+          <li>
+            <a href="/pharmacy_dash/medicine_sales/">
+              <i class="bi bi-circle"></i><span>Blood Donor</span>
+            </a>
+          </li>
+          <li>
+            <a href="/pharmacy_dash/medicine_sales/">
+              <i class="bi bi-circle"></i><span>Medicine</span>
+            </a>
+          </li>
+          <li>
+            <a href="/pharmacy_dash/medicine_sales/">
+              <i class="bi bi-circle"></i><span>Operation Report</span>
+            </a>
+          </li>
+          <li>
+            <a href="/pharmacy_dash/medicine_sales/">
+              <i class="bi bi-circle"></i><span>Death Report</span>
+            </a>
+          </li>
+          <li>
+            <a href="/pharmacy_dash/medicine_sales/">
+              <i class="bi bi-circle"></i><span>Birth Report</span>
+            </a>
+          </li>
+        </ul>
+      </li><!-- End Charts Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="">
+          <i class="fa fa-medkit"></i>
+          <span>Payroll</span>
+        </a>
+      </li><!-- End Charts Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="/admin_dash/admin_pro">
+          <i class="bi bi-person"></i>
+          <span>Profile</span>
+        </a>
+      </li><!-- End Blank Page Nav -->
+
+    </ul>
+
+  </aside><!-- End Sidebar-->
+
+  
+  <main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Admin Dashboard</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
+          <li class="breadcrumb-item active">Admin Dashboard</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section dashboard">
+      <div class="row">
+
+        <!-- Left side columns -->
+        <div class="col-12">
+          <div class="row">
+
+            <!-- Sales Card -->
+            <div class="col-md-4">
+              <div class="card info-card sales-card">
+
+                <div class="card-body">
+                  <h5 class="card-title">Doctor</h5>
+
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                      <i class="fa fa-user-md"></i>
+                    </div>
+                    <div class="ps-3">
+                      <h6>{{ count_approve_doctor }} / {{ count_pending_doctor }}</h6>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div><!-- End Sales Card -->
+
+            <!-- Revenue Card -->
+            <div class="col-md-4">
+              <div class="card info-card revenue-card">
+
+                <div class="card-body">
+                  <h5 class="card-title">Patient</h5>
+
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                      <i class="fa fa-wheelchair"></i>
+                    </div>
+                    <div class="ps-3">
+                      <h6>{{ count_unreg_patient }} / {{ count_reg_patient }}</h6>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div><!-- End Revenue Card -->
+
+            <!-- Pharmacist Card -->
+            <div class="col-xl-4">
+
+              <div class="card info-card pharmacist-card">
+
+                <div class="card-body">
+                  <h5 class="card-title">Pharmacist</h5>
+
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                      <i class="fa fa-medkit"></i>
+                    </div>
+                    <div class="ps-3">
+                      <h6>{{ count_approve_pharmacy }} / {{ count_pending_pharmacy }}</h6>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+            </div><!-- End pharmacist Card -->
+
+            <!-- Customers Card -->
+            <div class="col-xl-4">
+
+              <div class="card info-card laboratorist-card">
+
+                <div class="card-body">
+                  <h5 class="card-title">Laboratorist</h5>
+
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                      <i class="fa fa-user-md"></i>
+                    </div>
+                    <div class="ps-3">
+                      <h6>{{ count_approve_laboratory }} / {{ count_pending_laboratory }}</h6>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+            </div><!-- End Customers Card -->
+
+            <!-- Customers Card -->
+            <div class="col-xl-4">
+
+              <div class="card info-card accountant-card">
+
+                <div class="card-body">
+                  <h5 class="card-title">Accountant</h5>
+
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                      <i class="bi bi-cash"></i>
+                    </div>
+                    <div class="ps-3">
+                      <h6>{{ count_approve_accountant }} / {{ count_pending_accountant }}</h6>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+            </div><!-- End Customers Card -->
+
+            <!-- Customers Card -->
+            <div class="col-xl-4">
+
+              <div class="card info-card accountant-card">
+
+                <div class="card-body">
+                  <h5 class="card-title">Nurse</h5>
+
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                      <i class="fa fa-medkit"></i>
+                    </div>
+                    <div class="ps-3">
+                      <h6>{{ count_approve_nurse }} / {{ count_pending_nurse }}</h6>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+            </div><!-- End Customers Card -->
+
+            <!-- Customers Card -->
+            <div class="col-xl-4">
+
+              <div class="card info-card payment-card">
+
+                <div class="card-body">
+                  <h5 class="card-title">Payment</h5>
+
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                      <i class="bi bi-receipt"></i>
+                    </div>
+                    <div class="ps-3">
+                      <h6>{{ count_payment }}</h6>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+            </div><!-- End Customers Card -->
+
+            <!-- Customers Card -->
+            <div class="col-xl-4">
+
+              <div class="card info-card medicine-card">
+
+                <div class="card-body">
+                  <h5 class="card-title">Medicine</h5>
+
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                      <i class="fa fa-medkit"></i>
+                    </div>
+                    <div class="ps-3">
+                      <h6>{{ count_medicine }}</h6>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+            </div><!-- End Customers Card -->
+
+            <!-- Customers Card -->
+            <div class="col-xl-4">
+
+              <div class="card info-card operation-card">
+
+                <div class="card-body">
+                  <h5 class="card-title">Appointment</h5>
+
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                      <i class="fa fa-wheelchair"></i>
+                    </div>
+                    <div class="ps-3">
+                      <h6>{{ count_appointment }}</h6>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+            </div><!-- End Customers Card -->
+
+            <!-- Customers Card -->
+            <div class="col-xl-4">
+
+              <div class="card info-card operation-card">
+
+                <div class="card-body">
+                  <h5 class="card-title">Operation Report</h5>
+
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                      <i class="fa fa-wheelchair"></i>
+                    </div>
+                    <div class="ps-3">
+                      <h6>{{ count_staff }}</h6>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+            </div><!-- End Customers Card -->
+
+            <!-- Customers Card -->
+            <div class="col-xl-4">
+
+              <div class="card info-card birth-card">
+
+                <div class="card-body">
+                  <h5 class="card-title">Birth Report</h5>
+
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                      <i class="bi b"></i>
+                    </div>
+                    <div class="ps-3">
+                      <h6>{{ count_staff }}</h6>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+            </div><!-- End Customers Card -->
+
+            <!-- Customers Card -->
+            <div class="col-xl-4">
+
+              <div class="card info-card death-card">
+
+                <div class="card-body">
+                  <h5 class="card-title">Death Report</h5>
+
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                      <i class="bi bi-circle-"></i>
+                    </div>
+                    <div class="ps-3">
+                      <h6>{{ count_staff }}</h6>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+            </div><!-- End Customers Card -->
+
+          </div>
+        </div><!-- End Left side columns -->
+
+      </div>
+    </section>
+
+  <!-- ======= Footer ======= -->
+  <footer id="footer" class="footer">
+    <div class="copyright">
+      &copy; Copyright <strong><span>King Care Hospital</span></strong>. All Rights Reserved
+    </div>
+    <div class="credits">
+      <!-- All the links in the footer should remain intact. -->
+      <!-- You can delete the links only if you purchased the pro version. -->
+      <!-- Licensing information: https://bootstrapmade.com/license/ -->
+      <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
+      Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+    </div>
+  </footer><!-- End Footer -->
+
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+      class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Vendor JS Files -->
+  <script src="{% static 'vendor/apexcharts/apexcharts.min.js' %}"></script>
+  <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'vendor/chart.js/chart.umd.js' %}"></script>
+  <script src="{% static 'vendor/echarts/echarts.min.js' %}"></script>
+  <script src="{% static 'vendor/quill/quill.min.js' %}"></script>
+  <script src="{% static 'vendor/simple-datatables/simple-datatables.js' %}"></script>
+  <script src="{% static 'vendor/tinymce/tinymce.min.js' %}"></script>
+  <script src="{% static 'vendor/php-email-form/validate.js' %}"></script>
+  <script src="{% static 'js/alertify.js' %}"></script>
+  <script src="{% static 'js/alertify.min.js' %}"></script>
+
+  <!-- Template Main JS File -->
+  <script src="{% static 'js/main.js' %}"></script>
+
+  <script>
+    alertify.set('notifier', 'position', 'top-right');
+
+    {% for msg in messages %}
+    alertify.success('{{ msg }}');
+    {% endfor %}
+
+  </script>
+
+</body>
+
+</html>

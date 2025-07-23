@@ -1,0 +1,459 @@
+{% load humanize%}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>Appointment - King Care Hospital</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="{% static 'img/favicon.png' %}" rel="icon">
+  <link href="{% static 'img/apple-touch-icon.png' %}" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.gstatic.com" rel="preconnect">
+  <link
+    href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+    rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/quill/quill.snow.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/quill/quill.bubble.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/remixicon/remixicon.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/simple-datatables/style.css' %}" rel="stylesheet">
+  <link href="{% static 'css/alertify.css' %}" rel="stylesheet">
+  <link href="{% static 'css/alertify.min.css' %}" rel="stylesheet">
+  <script src="{% static 'CDN/jquery-3.1.1.min.js' %}"></script>
+  <link href="{% static 'CDN/jquery-ui.min.css' %}" rel="stylesheet">
+  <script src="{% static 'CDN/jquery-ui.min.js' %}"></script>
+
+  <link href="{% static 'font-awesome-4.7.0/css/font-awesome.css' %}" rel="stylesheet">
+  <link href="{% static 'font-awesome-4.7.0/css/font-awesome.min.css' %}" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="{% static 'css/style.css' %}" rel="stylesheet">
+
+  <!-- =======================================================
+  * Template Name: NiceAdmin
+  * Updated: Aug 30 2023 with Bootstrap v5.3.1
+  * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+</head>
+
+<body>
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="header fixed-top d-flex align-items-center">
+
+    <div class="d-flex align-items-center justify-content-between">
+      <a href="/patient_dash/" class="logo d-flex align-items-center">
+        <img src="{% static 'img/logo.png' %}" alt="">
+        <span class="d-none d-lg-block">King Care Hospital</span>
+      </a>
+      <i class="bi bi-list toggle-sidebar-btn"></i>
+    </div><!-- End Logo -->
+
+    <nav class="header-nav ms-auto">
+      <ul class="d-flex align-items-center">
+        <li class="nav-item dropdown pe-3">
+
+          <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+            <img src="{{ get_patient_info.profile_picture.url }}" alt="Profile" class="rounded-circle">
+            <span class="d-none d-md-block dropdown-toggle ps-2">{{get_patient_info.patient_name}}</span>
+          </a><!-- End Profile Iamge Icon -->
+
+          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+            <li class="dropdown-header">
+              <h6>{{get_patient_info.patient_name}}</h6>
+              <span>Patient No: {{get_patient_info.patient_no}}</span>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="patient_dash/profile/">
+                <i class="bi bi-person"></i>
+                <span>My Profile</span>
+              </a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="patient_dash/profile/">
+                <i class="bi bi-person-gear"></i>
+                <span>Edit Profile</span>
+              </a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="patient_dash/profile/">
+                <i class="bi bi-lock"></i>
+                <span>Change Password</span>
+              </a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="/logout">
+                <i class="bi bi-box-arrow-right"></i>
+                <span>Sign Out</span>
+              </a>
+            </li>
+
+          </ul><!-- End Profile Dropdown Items -->
+        </li><!-- End Profile Nav -->
+
+      </ul>
+    </nav><!-- End Icons Navigation -->
+
+  </header><!-- End Header -->
+
+  <!-- ======= Sidebar ======= -->
+  <aside id="sidebar" class="sidebar">
+
+    <div class="dash-profile d-flex justify-content-center align-items-center">
+      <div class="pro-img" style="width: 80px; height: 80px; border-radius: 50%; border: 1px solid #4154f1; display: flex; justify-content: center; align-items: center; margin-right: 10px;">
+        <img src="{{get_patient_info.profile_picture.url}}" alt="" style="width: 70px; height: 70px; border-radius: 50%;">
+      </div>
+      <div class="pro-title">
+        <h5 class="fs-6 mb-0">Welcome</h5>
+        <h5 class="mb-0">{{get_patient_info.patient_name}}</h3>
+        <h6>Patient No: {{get_patient_info.patient_no}}</h6>
+      </div>
+    </div>
+
+    <br>
+
+    <ul class="sidebar-nav" id="sidebar-nav">
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="/patient_dash/">
+          <i class="bi bi-grid"></i>
+          <span>Dashboard</span>
+        </a>
+      </li><!-- End Dashboard Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link" href="/patient_dash/appointment_list/">
+          <i class="bi bi-cash"></i>
+          <span>Appointment</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<p style="margin-bottom: 0; background-color: #4154f1; color: #fff; border-radius: 50%; height: 18px; width: 18px; text-align: center;">{{count_patient_appointment}}</p>
+        </a>
+      </li><!-- End Contact Page Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="/patient_dash/prescription/">
+          <i class="fa fa-stethoscope"></i>
+          <span>Prescription</span>
+        </a>
+      </li><!-- End Contact Page Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="/patient_dash/admit_history/">
+          <i class="fa fa-hdd-o"></i>
+          <span>Admit History</span>
+        </a>
+      </li><!-- End Contact Page Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="/patient_dash/operation_history/">
+          <i class="fa fa-hospital-o"></i>
+          <span>Operation History</span>
+        </a>
+      </li><!-- End Contact Page Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="/patient_dash/invoice/">
+          <i class="fa fa-credit-card"></i>
+          <span>Invoice</span>
+        </a>
+      </li><!-- End Contact Page Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="/patient_dash/profile">
+          <i class="bi bi-person"></i>
+          <span>Profile</span>
+        </a>
+      </li><!-- End Blank Page Nav -->
+
+    </ul>
+
+  </aside><!-- End Sidebar-->
+
+  <main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Appointment</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="patient_dash/">Dashboard</a></li>
+          <li class="breadcrumb-item active">Appointment</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="card">
+            <div class="card-body">
+              <!-- Table with stripped rows -->
+              <div class="table-responsive">
+                <table class="table datatable table-responsive-lg">
+                  <thead>
+                    <tr class="text-center">
+                      <th style="font-size: 36px;">#</th>
+                      <th style="font-size: 36px;">Date</th>
+                      <th style="font-size: 36px;">Time</th>
+                      <th style="font-size: 36px;">Doctor</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% if get_appointment %}
+                    {% for get_patient_noss in get_patient_nos %}
+
+                    <tr class="text-center">
+                      <td>{{forloop.counter}}</td>
+                      <td>{{get_patient_noss.appointment_date}}</td>
+                      <td>{{get_patient_noss.appointment_time}}</td>
+                      <td>{{get_patient_noss.doctor_name}}</td>
+                    </tr>
+
+                    {% endfor %}
+                    {% endif %}
+                  </tbody>
+                </table>
+              </div>
+              <!-- End Table with stripped rows -->
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main><!-- End #main -->
+
+  <!-- ======= Footer ======= -->
+  <footer id="footer" class="footer">
+    <div class="copyright">
+      &copy; Copyright <strong><span>NiceAdmin</span></strong>. All Rights Reserved
+    </div>
+    <div class="credits">
+      <!-- All the links in the footer should remain intact. -->
+      <!-- You can delete the links only if you purchased the pro version. -->
+      <!-- Licensing information: https://bootstrapmade.com/license/ -->
+      <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
+      Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+    </div>
+  </footer><!-- End Footer -->
+
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+      class="bi bi-arrow-up-short"></i></a>
+
+  {% if get_patients_id %}
+
+  <script>
+    setTimeout(function () {
+      document.getElementById("click_me").click();
+    }, 500)
+  </script>
+
+  <!-- Modal trigger button -->
+  <i data-bs-toggle="modal" id="click_me" data-bs-target="#editmodal"></i>
+
+  <!-- Modal Body -->
+  <!-- if you want to close by clicking outside the modal, delete the last endpoint:data-bs-backdrop and data-bs-keyboard -->
+  <div class="modal fade" id="editmodal" tabindex="-1" role="dialog"
+    aria-labelledby="modalTitleId" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalTitleId">King Care Hospital</h5>
+          <a href="/dashboard/patient/">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </a>
+        </div>
+        <div class="modal-body">
+          <h3 class="modal-title">Edit {{get_patients_id.patient_name}} Profile</h3>
+          <form method="POST" class="row g-3 needs-validation" novalidate enctype="multipart/form-data">
+            {% csrf_token %}
+            <div style="width: 200px; height: 150px;">
+              <img src="{{get_patients_id.patient_picture.url}}" id="my_image" alt="" style="width: 200px; height: 150px; border: 2px solid green">
+              <input type="hidden" name="old_passport" value="{{get_patients_id.patient_picture.url}}" />
+              <!-- <input type="hidden" name="user_id" value="{{user.id}}" /> -->
+            </div>
+            <input type="file" class="form-control" id="upload_file" name="fileToUpload" accept="image/*" required value="{{get_patients_id.patient_picture.url}}"/>
+
+            <script>
+              window.addEventListener('load', function () {
+                document.querySelector('input[type="file"]').addEventListener('change', function () {
+                  if (this.files && this.files[0]) {
+                    var img = document.getElementById('my_image');  // $('img')[0]
+                    var fi = document.getElementById('upload_file');
+                    //   Calculate File Size to know what to upload         
+                    if (fi.files.length > 0) {
+                      //        LOAD IMAGE            
+                      img.src = URL.createObjectURL(this.files[0]); // set src to blob url
+                      img.onload = imageIsLoaded;
+                    }
+                  }
+                });
+              });
+            </script>
+            <div class="col-md-12">
+              <label for="fullName" class="form-label">Name</label>
+              <input type="text" class="form-control" name="get_fullName" id="fullName" value="{{get_patients_id.patient_name}}" required>
+            </div>
+            <div class="col-12">
+              <label for="address" class="form-label">Address</label>
+              <textarea name="get_address" id="address" placeholder="1234 Main St" class="form-control" value="" cols="10"
+                rows="10">{{get_patients_id.patient_address}}</textarea>
+            </div>
+            <div class="col-md-12">
+              <label for="phone" class="form-label">Phone</label>
+              <input type="tel" maxlength="11" class="form-control" name="get_phone" id="phone" value="{{get_patients_id.patient_phone}}" required>
+            </div>
+            <div class="col-md-12">
+              <label for="gender" class="form-label">Gender</label>
+              <select id="gender" name="get_gender" class="form-select" required>
+                <option value="{{get_patients_id.patient_gender}}">{{get_patients_id.patient_gender}}</option>
+                <option>Male</option>
+                <option>Female</option>
+              </select>
+            </div>
+            <div class="col-12">
+              <label for="dob" class="form-label">Date of Birth</label>
+              <input type="taxt" onclick="this.type='date'" class="form-control" name="get_dob" id="dob" value="{{get_patients_id.patient_dob|date:'Y-m-d'}}" required>
+            </div>
+            <div class="col-md-12">
+              <label for="state" class="form-label">Age</label>
+              <input type="number" id="get_age" class="form-control" name="get_age" value="{{get_patients_id.patient_age}}" required>
+            </div>
+            <div class="col-12">
+              <label for="city" class="form-label">Blood Group</label>
+              <select name="get_blood_group" id="get_blood_group" class="form-control" required>
+                <option value="{{get_patients_id.patient_blood_group}}">{{get_patients_id.patient_blood_group}}</option>
+                <option value="A+">A+</option>
+                <option value="A-">A-</option>
+                <option value="B+">B+</option>
+                <option value="B-">B-</option>
+                <option value="AB+">AB+</option>
+                <option value="AB-">AB-</option>
+                <option value="O+">O+</option>
+                <option value="O-">O-</option>
+              </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </form><!-- End Multi Columns Form -->
+        </div>
+        <div class="modal-footer">
+          <a href="/dashboard/patient/">
+            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Optional: Place to the bottom of scripts -->
+  <script>
+    const myModal = new bootstrap.Modal(document.getElementById('modalId'), options)
+
+  </script>
+
+  {% endif %}
+
+
+  {% if get_patient_id %}
+
+  <script>
+    setTimeout(function () {
+      document.getElementById("click_me").click();
+    }, 500)
+  </script>
+
+  <!-- Modal trigger button -->
+  <i data-bs-toggle="modal" id="click_me" data-bs-target="#delmodal"></i>
+
+  <!-- Modal Body -->
+  <!-- if you want to close by clicking outside the modal, delete the last endpoint:data-bs-backdrop and data-bs-keyboard -->
+  <div class="modal fade" id="delmodal" tabindex="-1" role="dialog"
+    aria-labelledby="modalTitleId" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalTitleId">King Care Hospital</h5>
+          <a href="/dashboard/patient/">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </a>
+        </div>
+        <div class="modal-body">
+          <h3 class="modal-title">Are you sure to Delete {{get_patient_id.patient_name}} fron the list</h3>
+        </div>
+        <div class="modal-footer">
+          <a href="/confirm_delete_patient/delete_patient/{{get_patient_id.id}}">
+            <button type="button" class="btn btn-danger">Delete</button>
+          </a>
+          <a href="/dashboard/patient/">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Optional: Place to the bottom of scripts -->
+  <script>
+    const myModal = new bootstrap.Modal(document.getElementById('modalId'), options)
+
+  </script>
+
+  {% endif %}
+
+  <!-- Vendor JS Files -->
+  <script src="{% static 'vendor/apexcharts/apexcharts.min.js' %}"></script>
+  <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'vendor/chart.js/chart.umd.js' %}"></script>
+  <script src="{% static 'vendor/echarts/echarts.min.js' %}"></script>
+  <script src="{% static 'vendor/quill/quill.min.js' %}"></script>
+  <script src="{% static 'vendor/simple-datatables/simple-datatables.js' %}"></script>
+  <script src="{% static 'vendor/tinymce/tinymce.min.js' %}"></script>
+  <script src="{% static 'vendor/php-email-form/validate.js' %}"></script>
+  <script src="{% static 'js/alertify.js' %}"></script>
+  <script src="{% static 'js/alertify.min.js' %}"></script>
+
+  <!-- Template Main JS File -->
+  <script src="{% static 'js/main.js' %}"></script>
+
+  <script>
+    alertify.set('notifier', 'position', 'top-right');
+
+    {% for msg in messages %}
+    alertify.success('{{ msg }}');
+    {% endfor %}
+  </script>
+
+</body>
+
+</html>
