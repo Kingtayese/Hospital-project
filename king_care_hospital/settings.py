@@ -133,8 +133,9 @@ STATICFILES_DIRS = [
 ]
 
 # WhiteNoise configuration for static files
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-# Allow collectstatic to proceed even if a referenced asset (e.g., *.map) is missing
+# Use non-manifest storage to avoid failing on missing source maps referenced by vendor assets
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
+# Keep this for forward-compatibility; harmless with non-manifest storage
 WHITENOISE_MANIFEST_STRICT = False
 
 # Upload image to:
