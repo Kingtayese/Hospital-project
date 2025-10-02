@@ -43,12 +43,16 @@ urlpatterns = [
     path('patient/confirm_delete_patient/<int:id>', views.confirm_delete_patient),
 
     path('confirm_delete_patient/delete_patient/<int:id>', views.delete_patient),
-
-    path('dashboard/appointment/', views.appointment),
     
-    # path('appointment/confirm_delete_appointment/<int:id>', views.confirm_delete_appointment),
+    path("get-doctors-availability/", views.get_doctors_with_availability, name="get_doctors_with_availability"),
 
-    # path('confirm_delete_appointment/delete_appointment/<int:id>', views.delete_appointment),
+    path('dashboard/appointment/', views.appointment, name='appointment'),
+    
+    path('appointment/edit/<int:id>/', views.appointment_edit, name='appointment_edit'),
+    
+    path('appointments/confirm_delete/<int:id>/', views.appointment_confirm_delete, name='appointment_confirm_delete'),
+    
+    path('appointments/delete/<int:id>/', views.appointment_delete, name='appointment_delete'),
 
     path('dashboard/payroll_list/', views.payroll),
 
@@ -260,13 +264,13 @@ urlpatterns = [
 
     path('admin_dash/', views.admin_dash),
 
-    path('admin_dash/department/', views.admin_department),
+    # path('admin_dash/department/', views.admin_department),
 
-    path('department/edit_department/<int:id>', views.admin_edit_department),
+    # path('department/edit_department/<int:id>', views.admin_edit_department),
 
-    path('department/confirm_delete_department/<int:id>', views.admin_confirm_delete_department),
+    # path('department/confirm_delete_department/<int:id>', views.admin_confirm_delete_department),
 
-    path('confirm_delete_department/delete_department/<int:id>', views.admin_delete_department),
+    # path('confirm_delete_department/delete_department/<int:id>', views.admin_delete_department),
 
 # All Doctor
     path('admin_dash/doctor/', views.admin_all_doctor),

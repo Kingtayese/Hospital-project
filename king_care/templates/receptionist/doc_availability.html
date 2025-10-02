@@ -522,33 +522,6 @@
     alertify.success('{{ msg }}');
     {% endfor %}
   </script>
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      const dateField = document.querySelector('input[name="date"]');
-      const timeField = document.querySelector('input[name="time"]');
-      const doctorSelect = document.querySelector('select[name="doctor"]');
-
-      function fetchDoctors() {
-        const date = dateField.value;
-        const time = timeField.value;
-
-        fetch(`/get-doctors-availability/?date=${date}&time=${time}`)
-          .then(response => response.json())
-          .then(data => {
-            doctorSelect.innerHTML = '<option selected hidden disabled>Select Doctor</option>';
-            data.doctors.forEach(d => {
-              let option = document.createElement("option");
-              option.value = d.id;
-              option.textContent = `${d.name} (${d.status})`;
-              doctorSelect.appendChild(option);
-            });
-          });
-      }
-
-      dateField.addEventListener("change", fetchDoctors);
-      timeField.addEventListener("change", fetchDoctors);
-    });
-  </script>
 
 </body>
 

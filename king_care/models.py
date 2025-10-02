@@ -27,10 +27,12 @@ class Add_patient(models.Model):
     patient_name = models.CharField(max_length=100, blank=True, null=True)
     patient_no = models.CharField(max_length=15, blank=True, null=True)
     patient_phone = models.CharField(max_length=15, blank=True, null=True)
-    patient_blood_group = models.CharField(max_length=5, blank=True, null=True)
+    patient_medical_history = models.CharField(max_length=500, blank=True, null=True)
     patient_dob = models.DateField(blank=True, null=True)
     patient_gender = models.CharField(max_length=50, blank=True, null=True)
     patient_address = models.CharField(max_length=500, blank=True, null=True)
+    medical_history = models.TextField(blank=True, null=True)
+    date_registered = models.DateTimeField(auto_now_add=True, blank=True, null=True)
     class Meta:
         managed=True
         db_table='add_patient'
@@ -51,10 +53,18 @@ class Patient_signup(models.Model):
         db_table='patient_signup'
         
 class Add_appointment(models.Model):
-    appointment_date = models.DateField(blank=True, null=True)
-    appointment_time = models.TimeField(blank=True, null=True)
-    doctor_name = models.CharField(max_length=100, blank=True, null=True)
-    patient_name = models.CharField(max_length=100, blank=True, null=True)
+    patient = models.ForeignKey(Patient_signup, on_delete=models.CASCADE, null=True)
+    doctor = models.ForeignKey(User, on_delete=models.CASCADE, limit_choices_to={'groups__name': "Doctor"}, null=True)
+    department = models.CharField(max_length=100, blank=True, null=True)
+    date = models.DateField(blank=True, null=True)
+    time = models.TimeField(blank=True, null=True)
+    status = models.CharField(max_length=20, choices=[
+        ('Scheduled', 'Scheduled'),
+        ('Checked-in', 'Checked-in'),
+        ('With Doctor', 'With Doctor'),
+        ('Completed', 'Completed'),
+        ('Cancelled', 'Cancelled'),
+    ], default='Scheduled')
     class Meta:
         managed=True
         db_table='add_appointment'
@@ -79,6 +89,16 @@ class Doctor_signup(models.Model):
     class Meta:
         managed = True
         db_table = 'doctor_signup'
+        
+class DoctorSchedule(models.Model):
+    doctor = models.ForeignKey(Doctor_signup, on_delete=models.CASCADE)
+    day_of_week = models.CharField(max_length=20)  # e.g. Monday, Tuesday
+    start_time = models.TimeField()
+    end_time = models.TimeField()
+    is_available = models.BooleanField(default=True)
+    class Meta:
+        managed = True
+        db_table = 'doctor_schedule'
 
 class Doctor_appointment(models.Model):
     appointment_date = models.DateField(blank=True, null=True)
@@ -281,10 +301,3 @@ class Add_blood_donor(models.Model):
         db_table='add_blood_donor'
 
 # ADMIN
-class Add_department(models.Model):
-    depart_icon = ResizedImageField(size=[300, 300], upload_to="depart_icon/", null=True, blank=True)
-    depart_title = models.CharField(max_length=150, blank=True, null=True)
-    depart_description = models.CharField(max_length=500, blank=True, null=True)
-    class Meta:
-        managed=True
-        db_table='add_department'

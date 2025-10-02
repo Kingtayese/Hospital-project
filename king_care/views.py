@@ -10,7 +10,9 @@ from django.template.loader import render_to_string
 from django.core.mail import EmailMessage
 from django.conf import settings
 import random
-
+from django.shortcuts import get_object_or_404
+from django.http import JsonResponse
+from django.utils.dateparse import parse_date, parse_time
 # Create your views here.
 
 @login_required(login_url='logout_dash/register/')
@@ -101,19 +103,19 @@ def add_patient(request):
         get_phone = request.POST.get('get_phone')
         get_gender = request.POST.get('get_gender')
         get_dob = request.POST.get('get_dob')
-        get_blood_group = request.POST.get('get_blood_group')
+        get_med_history = request.POST.get('get_med_history')
         get_address = request.POST.get('get_address')
 
         if Add_patient.objects.filter(patient_phone = get_phone).exists(): # CHECK FOR THE SAME CARD NUMBER
             messages.error(request, 'Phone Number already exists!!!, Please Enter new Phone Number')
             return redirect("/dashboard/patient")
         else:
-            submit_add_patient = Add_patient.objects.create(patient_name = get_fullName, patient_no = get_patient_no, patient_phone = get_phone, patient_blood_group = get_blood_group, patient_dob = get_dob, patient_gender = get_gender, patient_address = get_address)
+            submit_add_patient = Add_patient.objects.create(patient_name = get_fullName, patient_no = get_patient_no, patient_phone = get_phone, patient_medical_history = get_med_history, patient_dob = get_dob, patient_gender = get_gender, patient_address = get_address)
             submit_add_patient.save()
             messages.success(request, get_fullName + " have been registered as a PATIENT")
             return redirect('/dashboard/patient')
     else:
-        patient_no = random.randint(10, 1000000000)
+        patient_no = random.randint(6, 1000000)
         get_patient = Add_patient.objects.all()
 
         user_identity = request.user
@@ -145,14 +147,168 @@ def delete_patient(request, id):
     get_patient.delete()
     return redirect("/dashboard/patient")
 
+def get_doctors_with_availability(request):
+    date = request.GET.get("date")
+    time = request.GET.get("time")
+
+    doctors = Doctor_signup.objects.all()
+    result = []
+
+    if date and time:
+        date_obj = parse_date(date)
+        time_obj = parse_time(time)
+        day_of_week = date_obj.strftime("%A")  # e.g. Monday
+
+        for doctor in doctors:
+            schedule = DoctorSchedule.objects.filter(
+                doctor=doctor,
+                day_of_week=day_of_week,
+                start_time__lte=time_obj,
+                end_time__gte=time_obj,
+                is_available=True
+            ).first()
+
+            if schedule:
+                status = "✅ Available"
+            else:
+                status = "❌ Not Available"
+
+            result.append({
+                "id": doctor.user.id,
+                "name": f"Dr. {doctor.doctor_fullName}",
+                "status": status
+            })
+    else:
+        # if no date/time chosen yet, just return doctors
+        for doctor in doctors:
+            result.append({
+                "id": doctor.user.id,
+                "name": f"Dr. {doctor.doctor_fullName}",
+                "status": ""
+            })
+
+    return JsonResponse({"doctors": result})
+
 def appointment(request):
-    get_appointment = Add_appointment.objects.all()
-    count_appointment = Add_appointment.objects.all().count()
+    # Fetch all appointments (latest first)
+    get_appointment = Add_appointment.objects.all().order_by('-date', '-time')
+    count_appointment = get_appointment.count()
+
+    # Fetch patients and doctors
+    patients = Patient_signup.objects.all()
+    doctors = Doctor_signup.objects.all()
+    
+    if request.method == 'POST':
+        patient_no = request.POST.get('patient')
+        doctor_id = request.POST.get('doctor')  # This will now be User.id
+        department = request.POST.get('department')
+        date = request.POST.get('date')
+        time = request.POST.get('time')
+        status = request.POST.get('status')
+
+        # Validate
+        patient = get_object_or_404(Patient_signup, patient_no=patient_no)
+        doctor = get_object_or_404(User, id=doctor_id)  # now matches the option value
+
+        # Create appointment
+        Add_appointment.objects.create(
+            patient=patient,
+            doctor=doctor,
+            department=department,
+            date=date,
+            time=time,
+            status=status
+        )
+        messages.success(request, f"Appointment for {patient.patient_name} has been added successfully ✅")
+        return redirect('/dashboard/appointment/')
+    
+    # Get logged-in user info (Receptionist)
     user_identity = request.user
     user_identity_email = user_identity.email
     get_user_info = Hospital_reg.objects.get(email=user_identity_email)
-    all = {'get_user_info':get_user_info,'get_appointment':get_appointment, 'count_appointment':count_appointment}
-    return render(request, 'receptionist/appointment.html', all)
+
+    context = {
+        'get_user_info': get_user_info,
+        'get_appointment': get_appointment,
+        'count_appointment': count_appointment,
+        'patients': patients,
+        'doctors': doctors,
+        'title': 'Add Appointment',
+    }
+    return render(request, 'receptionist/appointment.html', context)
+
+# Edit appointment
+def appointment_edit(request, id):
+    appointment = get_object_or_404(Add_appointment, id=id)
+    get_appointment = Add_appointment.objects.all().order_by('-date', '-time')
+    count_appointment = get_appointment.count()
+
+    # Fetch patients and doctors
+    patients = Patient_signup.objects.all()
+    doctors = Doctor_signup.objects.all()
+
+    if request.method == 'POST':
+        patient_id = request.POST.get('patient')
+        doctor_id = request.POST.get('doctor')
+        department = request.POST.get('department')
+        date = request.POST.get('date')
+        time = request.POST.get('time')
+        status = request.POST.get('status')
+
+        # Match patient by id (change HTML to use p.id as value)
+        patient = get_object_or_404(Patient_signup, id=patient_id)
+        doctor = get_object_or_404(User, id=doctor_id)
+
+        # Update
+        appointment.patient = patient
+        appointment.doctor = doctor
+        appointment.department = department
+        appointment.date = date
+        appointment.time = time
+        appointment.status = status
+        appointment.save()
+
+        messages.success(request, f"Appointment for {patient.patient_name} has been edited successfully ✅")
+        return redirect('/dashboard/appointment/')
+
+    # Get logged-in user info (Receptionist)
+    user_identity = request.user
+    user_identity_email = user_identity.email
+    get_user_info = Hospital_reg.objects.get(email=user_identity_email)
+
+    return render(request, 'receptionist/appointment.html', {
+        'get_user_info': get_user_info,
+        'get_appointment': get_appointment,
+        'count_appointment': count_appointment,
+        'get_appointment_id': appointment,
+        'appointment': appointment,
+        'patients': patients,
+        'doctors': doctors,
+        'title': 'Edit Appointment'
+    })
+    
+# Delete appointment
+def appointment_confirm_delete(request, id):
+    appointments = get_object_or_404(Add_appointment, id=id)
+    get_appointment = Add_appointment.objects.all().order_by('-date', '-time')
+    count_appointment = get_appointment.count()
+    
+    # Get logged-in user info (Receptionist)
+    user_identity = request.user
+    user_identity_email = user_identity.email
+    get_user_info = Hospital_reg.objects.get(email=user_identity_email)
+    return render(request, 'receptionist/appointment.html', {
+        'appointments': appointments,
+        'get_appointment': get_appointment,
+        'get_user_info':get_user_info,
+        'count_appointment':count_appointment,
+    })
+    
+# Delete appointment
+def appointment_delete(request, id):
+    appointment = get_object_or_404(Add_appointment, id=id)
+    appointment.delete()
+    return redirect('/dashboard/appointment/')
   
 def payroll(request):
     user_identity = request.user
@@ -1795,71 +1951,6 @@ def admin_dash(request):
 
     all = {'get_admin_info':get_admin_info, 'count_unreg_patient':count_unreg_patient, 'count_reg_patient':count_reg_patient, 'count_payment':count_payment, 'count_medicine':count_medicine, 'count_appointment':count_appointment, 'count_approve_doctor':count_approve_doctor, 'count_pending_doctor':count_pending_doctor, 'count_approve_pharmacy':count_approve_pharmacy, 'count_pending_pharmacy':count_pending_pharmacy, 'count_approve_laboratory':count_approve_laboratory, 'count_pending_laboratory':count_pending_laboratory, 'count_approve_accountant':count_approve_accountant, 'count_pending_accountant':count_pending_accountant, 'count_approve_nurse':count_approve_nurse, 'count_pending_nurse':count_pending_nurse,}
     return render(request, 'admin/admin_dash.html', all)
-
-def admin_department(request):
-    if request.method == 'POST':
-        get_depart_title = request.POST.get('get_depart_title')
-        get_depart_description = request.POST.get('get_depart_description')
-
-        if 'fileToUpload' in request.FILES:
-            passport = request.FILES['fileToUpload']
-        else:
-            passport = 'abc.jpg'
-        submit_department = Add_department.objects.create(depart_title = get_depart_title, depart_description = get_depart_description, depart_icon = passport)
-        submit_department.save()
-        messages.success(request, get_depart_title + " have successfully registered")
-        return redirect('/admin_dash/department/')
-    else:
-        get_department = Add_department.objects.all()
-
-        user_identity = request.user
-        user_identity_email = user_identity.email
-        get_admin_info = Admin_signup.objects.get(admin_email=user_identity_email)
-
-        all = {'get_admin_info':get_admin_info, 'get_department':get_department}
-        return render(request, 'admin/admin_department.html', all)
-
-def admin_edit_department(request, id):
-    if request.method == 'POST':
-        old_image = request.POST.get('old_image')
-        get_depart_title = request.POST.get('get_depart_title')
-        get_depart_description = request.POST.get('get_depart_description')
-
-        if 'fileToUpload' in request.FILES:
-            passport = request.FILES['fileToUpload'] # This is for new image
-        else:
-            passport = old_image.replace('/media/', '') # Maintain the old image
-
-        user_identity = Add_department.objects.get(id=id)
-        user_identity.depart_icon = passport
-        user_identity.depart_title = get_depart_title
-        user_identity.depart_description = get_depart_description
-        user_identity.save()
-        messages.success(request, get_depart_title + " have successfully registered")
-        return redirect('/admin_dash/department/')
-    else:
-        get_department = Add_department.objects.all()
-        get_department_id = Add_department.objects.get(id=id)
-        user_identity = request.user
-        user_identity_email = user_identity.email
-        get_admin_info = Admin_signup.objects.get(admin_email=user_identity_email)
-        all = {'get_admin_info':get_admin_info, 'get_department_id': get_department_id, 'get_department':get_department}
-        return render(request, 'admin/admin_department.html', all)
-    
-def admin_confirm_delete_department(request, id):
-    get_departments_id = Add_department.objects.get(id=id)
-    get_department = Add_department.objects.all()
-
-    user_identity = request.user
-    user_identity_email = user_identity.email
-    get_admin_info = Admin_signup.objects.get(admin_email=user_identity_email)
-    all = {'get_department': get_department, 'get_departments_id':get_departments_id, 'get_admin_info':get_admin_info}
-    return render(request, 'admin/admin_department.html', all)
-
-def admin_delete_department(request, id):
-    get_department = Add_department.objects.get(id=id)
-    get_department.delete()
-    return redirect("/admin_dash/department/")
 
 # All Doctor
 def admin_all_doctor(request):
