@@ -28,7 +28,8 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-v_c7io!55-xbhapuevii2
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', 'True').lower() == 'true'
 
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
+# Hosts allowed to serve this application. Default includes Render's domain wildcard.
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1,.onrender.com').split(',')
 
 
 # Application definition
@@ -141,6 +142,18 @@ WHITENOISE_MANIFEST_STRICT = False
 # Upload image to:
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# Respect proxy headers (Render) and trust HTTPS from the proxy
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+USE_X_FORWARDED_HOST = True
+
+# CSRF trusted origins (include Render default domain). Can be overridden via env.
+_default_csrf_origins = [
+    'https://localhost',
+    'https://127.0.0.1',
+    'https://*.onrender.com',
+]
+CSRF_TRUSTED_ORIGINS = os.environ.get('CSRF_TRUSTED_ORIGINS', ','.join(_default_csrf_origins)).split(',')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
