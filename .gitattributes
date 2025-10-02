@@ -1,0 +1,2 @@
+# Normalize line endings for shell scripts to avoid /bin/bash^M issues on Linux
+*.sh text eol=lf
