@@ -1,0 +1,629 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>Prescription - King Care Hospital</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="{% static 'img/favicon.png' %}" rel="icon">
+  <link href="{% static 'img/apple-touch-icon.png' %}" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.gstatic.com" rel="preconnect">
+  <link
+    href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+    rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/quill/quill.snow.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/quill/quill.bubble.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/remixicon/remixicon.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/simple-datatables/style.css' %}" rel="stylesheet">
+  <link href="{% static 'css/alertify.css' %}" rel="stylesheet">
+  <link href="{% static 'css/alertify.min.css' %}" rel="stylesheet">
+  <script src="{% static 'CDN/jquery-3.1.1.min.js' %}"></script>
+  <link href="{% static 'CDN/jquery-ui.min.css' %}" rel="stylesheet">
+  <script src="{% static 'CDN/jquery-ui.min.js' %}"></script>
+
+  <link href="{% static 'font-awesome-4.7.0/css/font-awesome.css' %}" rel="stylesheet">
+  <link href="{% static 'font-awesome-4.7.0/css/font-awesome.min.css' %}" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="{% static 'css/style.css' %}" rel="stylesheet">
+
+  <!-- =======================================================
+  * Template Name: NiceAdmin
+  * Updated: Aug 30 2023 with Bootstrap v5.3.1
+  * Template URL: 
+  * Author: 
+  * License: 
+  ======================================================== -->
+</head>
+
+<body>
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="header fixed-top d-flex align-items-center">
+
+    <div class="d-flex align-items-center justify-content-between">
+      <a href="/doctor_dash/" class="logo d-flex align-items-center">
+        <img src="{% static 'img/logo.png' %}" alt="">
+        <span class="d-none d-lg-block">King Care Hospital</span>
+      </a>
+      <i class="bi bi-list toggle-sidebar-btn"></i>
+    </div><!-- End Logo -->
+
+    <nav class="header-nav ms-auto">
+      <ul class="d-flex align-items-center">
+        <li class="nav-item dropdown pe-3">
+
+          <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+            <img src="{{ get_doctor_info.profile_picture.url }}" alt="Profile" class="rounded-circle">
+            <span class="d-none d-md-block dropdown-toggle ps-2">{{ get_doctor_info.doctor_fullName }}</span>
+          </a><!-- End Profile Iamge Icon -->
+
+          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+            <li class="dropdown-header">
+              <h6>{{ get_doctor_info.doctor_fullName }}</h6>
+              <span>Doctor</span>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="/doctor_dash/doctor_pro">
+                <i class="bi bi-person"></i>
+                <span>My Profile</span>
+              </a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="/doctor_dash/doctor_pro">
+                <i class="bi bi-person-gear"></i>
+                <span>Edit Profile</span>
+              </a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="/doctor_dash/doctor_pro">
+                <i class="bi bi-lock"></i>
+                <span>Change Password</span>
+              </a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="/logout">
+                <i class="bi bi-box-arrow-right"></i>
+                <span>Sign Out</span>
+              </a>
+            </li>
+
+          </ul><!-- End Profile Dropdown Items -->
+        </li><!-- End Profile Nav -->
+
+      </ul>
+    </nav><!-- End Icons Navigation -->
+
+  </header><!-- End Header -->
+
+  <!-- ======= Sidebar ======= -->
+  <aside id="sidebar" class="sidebar">
+
+    <div class="dash-profile d-flex justify-content-center align-items-center">
+      <div class="pro-img"
+        style="width: 80px; height: 80px; border-radius: 50%; border: 1px solid #4154f1; display: flex; justify-content: center; align-items: center; margin-right: 10px;">
+        <img src="{{get_doctor_info.profile_picture.url}}" alt=""
+          style="width: 70px; height: 70px; border-radius: 50%;">
+      </div>
+      <div class="pro-title">
+        <h5 class="fs-6 mb-0">Welcome</h5>
+        <h5 class="mb-0">{{get_doctor_info.doctor_fullName}}</h3>
+          <h6>Doctor</h6>
+      </div>
+    </div>
+
+    <br>
+
+    <ul class="sidebar-nav" id="sidebar-nav">
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="/doctor_dash/">
+          <i class="bi bi-grid"></i>
+          <span>Dashboard</span>
+        </a>
+      </li><!-- End Dashboard Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="/doctor_dash/appointment/">
+          <i class="bi bi-cash"></i>
+          <span>Appointment</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<p
+            style="margin-bottom: 0; background-color: #4154f1; color: #fff; border-radius: 50%; height: 18px; width: 18px; text-align: center;">
+            {{count_patient_appointment}}</p>
+        </a>
+      </li><!-- End Contact Page Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link " href="/doctor_dash/prescription/">
+          <i class="fa fa-stethoscope"></i>
+          <span>Prescription</span>
+        </a>
+      </li><!-- End Contact Page Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="/doctor_dash/patient/">
+          <i class="fa fa-wheelchair"></i>
+          <span>Patient</span>
+        </a>
+      </li><!-- End Contact Page Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="/doctor_dash/bed_allotment/">
+          <i class="fa fa-hdd-o"></i>
+          <span>Bed Allotment</span>
+        </a>
+      </li><!-- End Contact Page Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="/doctor_dash/blood_bank/">
+          <i class="fa fa-tint"></i>
+          <span>Blood Bank</span>
+        </a>
+      </li><!-- End Contact Page Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="/doctor_dash/report/">
+          <i class="fa fa-book"></i>
+          <span>Report</span>
+        </a>
+      </li><!-- End Contact Page Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="/doctor_dash/payroll_list/">
+          <i class="bi bi-cash"></i>
+          <span>Payroll</span>
+        </a>
+      </li><!-- End Contact Page Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="/doctor_dash/doctor_pro">
+          <i class="bi bi-person"></i>
+          <span>Profile</span>
+        </a>
+      </li><!-- End Blank Page Nav -->
+
+    </ul>
+
+  </aside><!-- End Sidebar-->
+
+  <main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Prescription</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="/doctor_dash/">Dashboard</a></li>
+          <li class="breadcrumb-item active">Prescription</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section">
+      <div class="row">
+        <div class="col-lg-12">
+          <!-- Modal trigger button -->
+          <button type="button" class="btn btn-primary" style="margin-right: auto; margin-bottom: 20px;"
+            data-bs-toggle="modal" data-bs-target="#modalId">
+            <i class="bi bi-plus"></i> Add Prescription
+          </button>
+
+          <!-- Modal Body -->
+          <!-- if you want to close by clicking outside the modal, delete the last endpoint:data-bs-backdrop and data-bs-keyboard -->
+          <div class="modal fade" id="modalId" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+            role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="modalTitleId">King Care Hospital</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <h3 class="modal-title">Add Prescription</h3>
+                  <br>
+                  <form method="POST" class="row g-3 needs-validation" novalidate enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="col-12">
+                      <input type="text" name="get_doctor_name" hidden id="doctor_name"
+                        value="{{get_doctor_info.doctor_fullName}}" class="form-control">
+                    </div>
+                    <div class="col-md-12">
+                      <label for="patient_name" class="form-label">Patient</label>
+                      <select class="form-control" name="get_patient_name" id="patient_name">
+                        <option selected disabled hidden>Select patient</option>
+                        {% for get_patients in get_patient %}
+
+                        <option value="{{get_patients.patient_name}}">{{get_patients.patient_name}}</option>
+
+                        {% endfor %}
+                      </select>
+                    </div>
+                    <input type="text" name="get_patient_blood_group" id="patient_blood_group" class="form-control">
+                    <input type="text" name="get_patient_gender" id="patient_gender" class="form-control">
+                    <div class="col-md-12">
+                      <label for="case_history" class="form-label">Case History</label>
+                      <textarea name="get_case_history" class="form-control" id="case_history" cols="30"
+                        rows="10"></textarea>
+                    </div>
+                    <div class="col-md-12">
+                      <label for="medication" class="form-label">Medication</label>
+                      <textarea name="get_medication" class="form-control" id="medication" cols="30"
+                        rows="10"></textarea>
+                    </div>
+                    <div class="col-md-12">
+                      <label for="note" class="form-label">Note</label>
+                      <textarea name="get_note" class="form-control" id="note" cols="30" rows="10"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                  </form><!-- End Multi Columns Form -->
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+          <!-- Optional: Place to the bottom of scripts -->
+          <script>
+            const myModal = new bootstrap.Modal(document.getElementById('modalId'), options)
+          </script>
+
+          <div class="card">
+            <div class="card-body">
+
+              <!-- Table with stripped rows -->
+              <div class="table-responsive">
+                <table class="table datatable table-responsive-lg">
+                  <thead>
+                    <tr class="text-center">
+                      <th style="font-size: 36px;">#</th>
+                      <th style="font-size: 36px;">Date</th>
+                      <th style="font-size: 36px;">Doctor</th>
+                      <th style="font-size: 36px;">Patient</th>
+                      <th style="font-size: 36px;">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for get_prescriptions in get_prescription %}
+
+                    <tr class="text-center">
+                      <td>{{forloop.counter}}</td>
+                      <td>{{get_prescriptions.prescription_date}} - {{get_prescriptions.prescription_time}}</td>
+                      <td>{{get_prescriptions.doctor_name}}</td>
+                      <td>{{get_prescriptions.patient_name}}</td>
+                      <td>
+                        <a href="/prescription/edit_prescription/{{get_prescriptions.id}}">
+                          <button type="button" class="btn btn-primary">
+                            <i class="bi bi-pencil text-light"></i>
+                          </button>
+                        </a>
+                        <a href="/prescription/view_prescription/{{get_prescriptions.id}}">
+                          <button type="button" class="btn btn-primary">
+                            <i class="bi bi-eye text-light"></i>
+                          </button>
+                        </a>
+                        <a href="/prescription/confirm_delete_prescription/{{get_prescriptions.id}}">
+                          <button type="button" class="btn btn-danger">
+                            <i class="bi bi-trash text-light"></i>
+                          </button>
+                        </a>
+                      </td>
+                    </tr>
+
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+              <!-- End Table with stripped rows -->
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main><!-- End #main -->
+
+  {% if get_prescription_id %}
+
+  <script>
+    setTimeout(function () {
+      document.getElementById("click_me").click();
+    }, 500)
+  </script>
+
+  <!-- Modal trigger button -->
+  <i data-bs-toggle="modal" id="click_me" data-bs-target="#edit_prescription"></i>
+
+  <!-- Modal Body -->
+  <!-- if you want to close by clicking outside the modal, delete the last endpoint:data-bs-backdrop and data-bs-keyboard -->
+  <div class="modal fade" id="edit_prescription" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+    role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalTitleId">King Care Hospital</h5>
+          <a href="/doctor_dash/prescription/">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </a>
+        </div>
+        <div class="modal-body">
+          <h3 class="modal-title">Edit prescription</h3>
+          <br>
+          <form method="POST" class="row g-3 needs-validation" novalidate enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="col-12">
+              <input type="text" name="get_doctor_name" hidden id="doctor_name"
+                value="{{get_doctor_info.doctor_fullName}}" class="form-control">
+            </div>
+            <div class="col-md-12">
+              <label for="patient_name" class="form-label">Patient</label>
+              <input type="text" name="get_patient_name" readonly id="patient_name" value="{{get_prescription_id.patient_name}}" class="form-control">
+            </div>
+            <div class="col-md-12">
+              <label for="case_history" class="form-label">Case History</label>
+              <textarea name="get_case_history" class="form-control" id="case_history" cols="30"
+                rows="10">{{get_prescription_id.case_history}}</textarea>
+            </div>
+            <div class="col-md-12">
+              <label for="medication" class="form-label">Medication</label>
+              <textarea name="get_medication" class="form-control" id="medication" cols="30"
+                rows="10">{{get_prescription_id.medication}}</textarea>
+            </div>
+            <div class="col-md-12">
+              <label for="note" class="form-label">Note</label>
+              <textarea name="get_note" class="form-control" id="note" cols="30"
+                rows="10">{{get_prescription_id.note}}</textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Update</button>
+          </form><!-- End Multi Columns Form -->
+        </div>
+        <div class="modal-footer">
+          <a href="/doctor_dash/prescription/">
+            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Optional: Place to the bottom of scripts -->
+  <script>
+    const myModal = new bootstrap.Modal(document.getElementById('modalId'), options)
+
+  </script>
+
+  {% endif %}
+
+
+  {% if get_prescriptions_id %}
+
+  <script>
+    setTimeout(function () {
+      document.getElementById("click_me").click();
+    }, 500)
+  </script>
+
+  <!-- Modal trigger button -->
+  <i data-bs-toggle="modal" id="click_me" data-bs-target="#edit_prescription"></i>
+
+  <!-- Modal Body -->
+  <!-- if you want to close by clicking outside the modal, delete the last endpoint:data-bs-backdrop and data-bs-keyboard -->
+  <div class="modal fade" id="edit_prescription" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+    role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalTitleId">King Care Hospital</h5>
+          <a href="/doctor_dash/prescription/">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </a>
+        </div>
+        <div class="modal-body">
+          <h4>Are you sure to delete {{get_prescriptions_id.patient_name}} prescription?</h4>
+        </div>
+        <div class="modal-footer">
+          <a href="/confirm_delete_prescription/delete_prescription/{{get_prescriptions_id.id}}">
+            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Delete</button>
+          </a>
+          <a href="/doctor_dash/prescription/">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Optional: Place to the bottom of scripts -->
+  <script>
+    const myModal = new bootstrap.Modal(document.getElementById('modalId'), options)
+
+  </script>
+
+  {% endif %}
+
+  {% if gets_prescription_id %}
+
+  <script>
+    setTimeout(function () {
+      document.getElementById("click_me").click();
+    }, 500)
+  </script>
+
+  <!-- Modal trigger button -->
+  <i data-bs-toggle="modal" id="click_me" data-bs-target="#edit_prescription"></i>
+
+  <!-- Modal Body -->
+  <!-- if you want to close by clicking outside the modal, delete the last endpoint:data-bs-backdrop and data-bs-keyboard -->
+  <div class="modal fade" id="edit_prescription" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+    role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalTitleId">King Care Hospital</h5>
+          <a href="/doctor_dash/prescription/">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </a>
+        </div>
+        <div class="modal-body">
+          <div class="modals-column" style="display: flex; justify-content: space-between;">
+            <div class="patient-bio">
+              <h6>Patient Name: {{gets_prescription_id.patient_name}}</h6>
+              <h6>Patient Blood Group: {{gets_prescription_id.patient_blood_group}}</h6>
+              <h6>Patient Gender: {{gets_prescription_id.patient_gender}}</h6>
+            </div>
+            <div class="doctor-bio" style="text-align:">
+              <h6>Doctor Name: {{gets_prescription_id.doctor_name}}</h6>
+              <h6>Date: {{gets_prescription_id.prescription_date}}</h6>
+              <h6>Time: {{gets_prescription_id.prescription_time}}</h6>
+            </div>
+          </div>
+          <hr>
+          <div class="case-history">
+            <h5>Case History:</h5>
+            <h6>{{gets_prescription_id.case_history}}</h6>
+          </div>
+          <hr>
+          <div class="medication">
+            <h5>Medication:</h5>
+            <h6>{{gets_prescription_id.medication}}</h6>
+          </div>
+          <hr>
+          <div class="case-history">
+            <h5>Note:</h5>
+            <h6>{{gets_prescription_id.note}}</h6>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <a href="/doctor_dash/prescription/">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Optional: Place to the bottom of scripts -->
+  <script>
+    const myModal = new bootstrap.Modal(document.getElementById('modalId'), options)
+
+  </script>
+
+  {% endif %}
+
+  <!-- ======= Footer ======= -->
+  <footer id="footer" class="footer">
+    <div class="copyright">
+      &copy; Copyright <strong><span>NiceAdmin</span></strong>. All Rights Reserved
+    </div>
+    <div class="credits">
+      <!-- All the links in the footer should remain intact. -->
+      <!-- You can delete the links only if you purchased the pro version. -->
+
+    </div>
+  </footer><!-- End Footer -->
+
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+      class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Vendor JS Files -->
+  <script src="{% static 'vendor/apexcharts/apexcharts.min.js' %}"></script>
+  <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'vendor/chart.js/chart.umd.js' %}"></script>
+  <script src="{% static 'vendor/echarts/echarts.min.js' %}"></script>
+  <script src="{% static 'vendor/quill/quill.min.js' %}"></script>
+  <script src="{% static 'vendor/simple-datatables/simple-datatables.js' %}"></script>
+  <script src="{% static 'vendor/tinymce/tinymce.min.js' %}"></script>
+  <script src="{% static 'vendor/php-email-form/validate.js' %}"></script>
+  <script src="{% static 'js/alertify.js' %}"></script>
+  <script src="{% static 'js/alertify.min.js' %}"></script>
+
+  <!-- Template Main JS File -->
+  <script src="{% static 'js/main.js' %}"></script>
+
+  <script>
+    alertify.set('notifier', 'position', 'top-right');
+
+    {% for msg in messages %}
+    alertify.success('{{ msg }}');
+    {% endfor %}
+
+
+    $("#patient_name").change(function () {
+      //alert('i see you');
+      var patient_name = document.getElementById("patient_name").value;
+      $.ajax({
+        // --------REQUEST-------
+        type: "GET",
+        url: "/get_patient_blood_groups",
+        data: {
+          get_patient_name: patient_name,
+        },
+
+        // ---------------RESPONSES------------
+        success: function (data) {
+          $("#patient_blood_group").text(data);
+          //alert(data);
+          document.getElementById("patient_blood_group").value = data;
+        },
+      })
+    })
+
+    $("#patient_name").change(function () {
+      //alert('i see you');
+      var patient_name = document.getElementById("patient_name").value;
+      $.ajax({
+        // --------REQUEST-------
+        type: "GET",
+        url: "/get_patient_genders",
+        data: {
+          get_patient_name: patient_name,
+        },
+
+        // ---------------RESPONSES------------
+        success: function (data) {
+          $("#patient_gender").text(data);
+          //alert(data);
+          document.getElementById("patient_gender").value = data;
+        },
+      })
+    })
+
+  </script>
+
+</body>
+
+</html>
