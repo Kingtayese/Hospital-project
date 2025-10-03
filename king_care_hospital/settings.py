@@ -14,6 +14,7 @@ from pathlib import Path
 import os
 import os.path
 import dj_database_url
+from urllib.parse import urlparse
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -29,7 +30,22 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-v_c7io!55-xbhapuevii2
 DEBUG = os.environ.get('DEBUG', 'True').lower() == 'true'
 
 # Hosts allowed to serve this application. Default includes Render's domain wildcard.
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1,.onrender.com').split(',')
+_default_allowed_hosts = ['localhost', '127.0.0.1', '.onrender.com']
+_env_allowed = [h.strip() for h in os.environ.get('ALLOWED_HOSTS', '').split(',') if h.strip()]
+ALLOWED_HOSTS = _env_allowed if _env_allowed else list(_default_allowed_hosts)
+# Always include safe defaults
+for _h in _default_allowed_hosts:
+    if _h not in ALLOWED_HOSTS:
+        ALLOWED_HOSTS.append(_h)
+# Add Render external hostname automatically if available
+_render_url = os.environ.get('RENDER_EXTERNAL_URL')
+if _render_url:
+    try:
+        _host = urlparse(_render_url).netloc
+        if _host and _host not in ALLOWED_HOSTS:
+            ALLOWED_HOSTS.append(_host)
+    except Exception:
+        pass
 
 
 # Application definition
@@ -147,13 +163,29 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 USE_X_FORWARDED_HOST = True
 
-# CSRF trusted origins (include Render default domain). Can be overridden via env.
-_default_csrf_origins = [
-    'https://localhost',
-    'https://127.0.0.1',
-    'https://*.onrender.com',
-]
-CSRF_TRUSTED_ORIGINS = os.environ.get('CSRF_TRUSTED_ORIGINS', ','.join(_default_csrf_origins)).split(',')
+# CSRF trusted origins (include Render default domain). Merge env with defaults and Render hostname.
+_default_csrf_origins = ['https://localhost', 'https://127.0.0.1', 'https://*.onrender.com']
+_env_csrf = [o.strip() for o in os.environ.get('CSRF_TRUSTED_ORIGINS', '').split(',') if o.strip()]
+# Normalize env origins to include scheme
+_normalized_env_csrf = []
+for _o in _env_csrf:
+    if _o.startswith('http://') or _o.startswith('https://'):
+        _normalized_env_csrf.append(_o)
+    else:
+        _normalized_env_csrf.append(f'https://{_o}')
+CSRF_TRUSTED_ORIGINS = list(_default_csrf_origins)
+for _o in _normalized_env_csrf:
+    if _o not in CSRF_TRUSTED_ORIGINS:
+        CSRF_TRUSTED_ORIGINS.append(_o)
+# Add derived Render origin if available
+if _render_url:
+    try:
+        _parsed = urlparse(_render_url)
+        _origin = f'{_parsed.scheme}://{_parsed.netloc}' if _parsed.scheme and _parsed.netloc else None
+        if _origin and _origin not in CSRF_TRUSTED_ORIGINS:
+            CSRF_TRUSTED_ORIGINS.append(_origin)
+    except Exception:
+        pass
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
